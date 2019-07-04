@@ -11,7 +11,9 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
           <!-- break down into components -->
         
         <stock-branch></stock-branch>
+        
         <stock-selector></stock-selector>
+        
         <stock-products></stock-products>
 
         <div formGroupName="store">
