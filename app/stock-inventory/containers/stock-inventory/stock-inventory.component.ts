@@ -8,6 +8,12 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
     <div class="stock-inventory">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
+          <!-- break down into components -->
+        
+        <stock-branch></stock-branch>
+        <stock-selector></stock-selector>
+        <stock-products></stock-products>
+
         <div formGroupName="store">
           <input 
             type="text" 
@@ -36,9 +42,14 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
 export class StockInventoryComponent {
   form = new FormGroup({
     store: new FormGroup({
-      branch: new FormControl('B182'),
-      code: new FormControl('1234')
-    })
+      branch: new FormControl(''),
+      code: new FormControl('')
+    }), 
+    selector: new FormGroup({
+      product_id: new FormControl(''), 
+      quantity: new FormControl(10)
+    }), 
+    stock: new FormArray([])
   })
 
   onSubmit() {
