@@ -10,22 +10,19 @@ import { FormControl, FormGroup, FormArray } from '@angular/forms';
 
           <!-- break down into components -->
         
-        <stock-branch></stock-branch>
+        <stock-branch
+          [parent]="form">
+        </stock-branch>
         
-        <stock-selector></stock-selector>
+        <stock-selector
+          [parent]="form">
+        </stock-selector>
         
-        <stock-products></stock-products>
+        <stock-products
+          [parent]="form">
+        </stock-products>
 
-        <div formGroupName="store">
-          <input 
-            type="text" 
-            placeholder="Branch ID"
-            formControlName="branch">
-          <input 
-            type="text" 
-            placeholder="Manager Code"
-            formControlName="code">
-        </div>
+        
 
         <div class="stock-inventory__buttons">
           <button 
