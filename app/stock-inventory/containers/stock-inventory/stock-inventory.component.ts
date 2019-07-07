@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Product } from './models/product.interface'
 @Component({
   selector: 'stock-inventory',
@@ -16,11 +16,13 @@ import { Product } from './models/product.interface'
         
         <stock-selector
           [parent]="form"
-          [products]="products">
+          [products]="products"
+          (added)="addStock($event)">
         </stock-selector>
         
         <stock-products
-          [parent]="form">
+          [parent]="form"
+          (removed) ="removeStock($event)">
         </stock-products>
 
         
@@ -40,7 +42,7 @@ import { Product } from './models/product.interface'
   `
 })
 export class StockInventoryComponent {
-  
+constructor(private fb:FormBuilder) {}
 products: Product[] =[
   { "id": 1, "price":2800, "name": "MacBook Pro" },
   { "id": 2, "price":50, "name": "USB-C adapter" },
@@ -49,16 +51,33 @@ products: Product[] =[
   { "id": 5, "price":600, "name": "Apple watch" }
 ]
   form = new FormGroup({
-    store: new FormGroup({
-      branch: new FormControl(''),
-      code: new FormControl('')
+    store: this.fb.group({
+      branch: '',
+      code: ''
     }), 
-    selector: new FormGroup({
-      product_id: new FormControl(''), 
-      quantity: new FormControl(10)
-    }), 
-    stock: new FormArray([])
+    selector: this.createStock({}),    
+    stock: this.fb.array([
+      this.createStock({product_id:1, quantity: 10}),
+      this.createStock({product_id:2, quantity: 10})
+    ])
   })
+
+  createStock(stock) {
+    return this.fb.group({
+      product_id: parseInt(stock.product_id, 10) || '', 
+      quantity: stock.quantity || 10
+    })
+  }
+
+  addStock(stock) {
+    const control = this.form.get('stock') as FormArray; 
+    control.push(this.createStock(stock))
+  }
+  removeStock({group, index} : {group:FormGroup, index:number}) {
+    console.log(group,index); 
+    const control = this.form.get('stock') as FormArray; 
+    control.removeAt(index)
+  }
 
   onSubmit() {
     console.log('Submit:', this.form.value);
