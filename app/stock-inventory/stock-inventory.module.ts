@@ -21,8 +21,7 @@ import { StockSelectorComponent } from './components/stock-selector/stock-select
   ],
   exports: [
     StockInventoryComponent, 
-     
-
+    
   ]
 })
 export class StockInventoryModule {}

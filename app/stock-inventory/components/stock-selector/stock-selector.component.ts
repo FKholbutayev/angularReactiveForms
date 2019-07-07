@@ -4,7 +4,7 @@ import { Product } from '../../containers/stock-inventory/models/product.interfa
 
 @Component({
     selector: 'stock-selector', 
-    //styleUrls: ['stock-selector.component.scss'],
+    styleUrls: ['stock-selector.component.scss'],
     template: `
         <div class="stock-selector" 
             [formGroup]="parent">
@@ -26,7 +26,6 @@ import { Product } from '../../containers/stock-inventory/models/product.interfa
                         Add stock
                     </button>
                 </div>
-
         </div>
     `
 })
