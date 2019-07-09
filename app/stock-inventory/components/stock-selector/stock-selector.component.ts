@@ -10,7 +10,7 @@ import { Product } from '../../containers/stock-inventory/models/product.interfa
             [formGroup]="parent">
                 <div formGroupName="selector">
                     <select formControlName="product_id">
-                        <option>Select stock</option>
+                        <option value="">Select stock</option>
                         <option
                         *ngFor ="let product of products"
                         [value] ="product.id"> {{product.name}}
@@ -41,5 +41,9 @@ added = new EventEmitter<any>()
 
 onAdd() {
     this.added.emit(this.parent.get('selector').value)
+    this.parent.get('selector').reset({
+        product_id: '', 
+        quantity: 10
+    })
 }
 }
