@@ -16,15 +16,21 @@ import { Product } from '../../containers/stock-inventory/models/product.interfa
                         [value] ="product.id"> {{product.name}}
                         </option>
                     </select>
-                    <input 
-                        type="number"
-                        step="10"
-                        min="10"
-                        max="1000"
-                        formControlName="quantity">
-                    <button type="button" (click)="onAdd()">
+                    <stock-counter
+                         [step]="10"
+                         [min]="10"
+                         [max]="1000"
+                         formControlName="quantity">
+                    </stock-counter>
+                    <button type="button"
+                         [disabled]="stockExists || notSelected"
+                         (click)="onAdd()">
                         Add stock
                     </button>
+                    <div class="stock-selector__error"
+                         *ngIf="stockExists">
+                        Item already exists in the stock
+                    </div>
                 </div>
         </div>
     `
@@ -38,6 +44,19 @@ products: Product[];
 
 @Output() 
 added = new EventEmitter<any>()
+
+get stockExists() {
+    return (
+        this.parent.hasError('stockExists')&&
+        this.parent.get('selector.product_id').dirty
+    )
+}
+
+get notSelected() {
+    return (
+        !this.parent.get('selector.product_id').value
+    )
+}
 
 onAdd() {
     this.added.emit(this.parent.get('selector').value)

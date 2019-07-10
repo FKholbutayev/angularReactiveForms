@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Product } from './models/product.interface'; 
 import { Item } from './models/item.interface'; 
 import { Observable } from 'rxjs/Observable';
@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map'
 
 
 import { StockInventoryService } from '../../services/stock-investory.service'
+import { StockValidators } from './stock-inventory.validators';
 
 @Component({
   selector: 'stock-inventory',
@@ -61,12 +62,12 @@ export class StockInventoryComponent implements OnInit {
 
   form = new FormGroup({
     store: this.fb.group({
-      branch: '',
-      code: ''
+      branch: ['',[Validators.required,StockValidators.checkBranch]],
+      code: ['',Validators.required]
     }), 
     selector: this.createStock({}),    
     stock: this.fb.array([])
-  })
+  }, StockValidators.checkStockExists);
 
 constructor(
     private fb:FormBuilder, 
@@ -113,7 +114,6 @@ constructor(
     control.push(this.createStock(stock))
   }
   removeStock({group, index} : {group:FormGroup, index:number}) {
-    console.log(group,index); 
     const control = this.form.get('stock') as FormArray; 
     control.removeAt(index)
   }
