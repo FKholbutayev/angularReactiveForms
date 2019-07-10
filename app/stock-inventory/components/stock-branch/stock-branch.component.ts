@@ -20,6 +20,10 @@ import { FormGroup, RequiredValidator } from '@angular/forms';
            *ngIf="invalid">
             Invalid branch code: 1 letter, 3 numbers
           </div>
+          <div class="error"
+           *ngIf="unknown">
+            Unknown branch, please check id
+          </div>
         <input 
           type="text" 
           placeholder="Manager Code"
@@ -42,6 +46,13 @@ required(name:string) {
   return (
     this.parent.get(`store.${name}`).hasError('required') &&
     this.parent.get(`store.${name}`).touched
+  )
+}
+
+get unknown() {
+  return (
+    this.parent.get('store.branch').hasError('unknownBranch') && 
+    this.parent.get('store.branch').dirty
   )
 }
 

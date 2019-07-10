@@ -10,6 +10,12 @@
             { "id": 3, "price":400, "name": "Ipod" },
             { "id": 4, "price":900, "name": "Iphone" },
             { "id": 5, "price":600, "name": "Apple watch" }
-          ]
+          ], 
+    "branches": [
+        {"id":"B182"},
+        {"id":"A779"},
+        {"id":"C390"},
+        {"id":"D134"}
+    ]
         
 }

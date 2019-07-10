@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Product } from './models/product.interface'; 
 import { Item } from './models/item.interface'; 
 import { Observable } from 'rxjs/Observable';
@@ -62,8 +62,11 @@ export class StockInventoryComponent implements OnInit {
 
   form = new FormGroup({
     store: this.fb.group({
-      branch: ['',[Validators.required,StockValidators.checkBranch]],
-      code: ['',Validators.required]
+      branch: ['',
+      [Validators.required,StockValidators.checkBranch],
+      [this.validateBranch.bind(this)] 
+      ],
+      code: ['', Validators.required]
     }), 
     selector: this.createStock({}),    
     stock: this.fb.array([])
@@ -93,6 +96,13 @@ constructor(
             .valueChanges.subscribe(value =>this.calculateTotal(value))
         });
   
+  }
+
+  validateBranch(control:AbstractControl) {
+    console.log("control", control); 
+    return this.stockService.checkBranchId(control.value)
+            .map((response) => response ? null : { unknownBranch:true})
+
   }
 
   calculateTotal(value:Item[]) {
